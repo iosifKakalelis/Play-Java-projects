@@ -1,0 +1,13 @@
+New log file opened at Mon Jul 06 10:30:26 EEST 2015 by 5408@petali
+Taking next connection to: 49297
+New client attempting to connect on port: 49298-49297
+  Address = /169.254.229.232:49297
+This client on port 49298 has uuid 4e696e29-fe72-4e04-b9e1-fd70122cf474 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474
+Taking next connection to: 49297
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 5408@petali logs at Mon Jul 06 10:33:32 EEST 2015, goodbye.

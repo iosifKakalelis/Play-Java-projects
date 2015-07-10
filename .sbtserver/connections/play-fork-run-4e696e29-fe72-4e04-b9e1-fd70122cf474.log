@@ -1,0 +1,9 @@
+New log file opened at Mon Jul 06 10:30:32 EEST 2015 by 5408@petali
+Sending msg to client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474: DetachedLogEvent(LogMessage(debug,sbt client logs are in: C:\Users\veltio\test-form\.sbtserver\connections\play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474.log))
+Sending msg to client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474: DetachedLogEvent(LogMessage(debug,sbt server socket logs are in: C:\Users\veltio\test-form\.sbtserver\connections\master.log))
+Reading next message from client.
+Sending msg to client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474: DetachedLogEvent(LogMessage(debug,sbt general server logs are in: C:\Users\veltio\test-form\.sbtserver\master.log))
+Client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474 closed, java.net.SocketException: Unrecognized Windows Sockets error: 0: recv failed, shutting down
+Stopping client.
+Dropping message (0,ReceivedResponse()) to dead client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474
+Client play-fork-run-4e696e29-fe72-4e04-b9e1-fd70122cf474 thread exiting.

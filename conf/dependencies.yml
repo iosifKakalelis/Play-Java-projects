@@ -1,0 +1,17 @@
+# Application dependencies
+
+require:
+    - play
+    - play -> scala 0.8
+    - org.jbpm -> jbpm-persistence-jpa 5.0.0:
+        exclude:
+            - javassist -> javassist *
+            - org.hibernate -> hibernate-annotations *
+            - javax.persistence -> persistence-api *
+repositories:
+    - jboss:
+        type: iBiblio
+        root: "http://repository.jboss.org/nexus/content/groups/public-jboss/"
+        contains:
+            - org.jbpm -> *
+            - org.drools -> *

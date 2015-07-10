@@ -1,0 +1,13 @@
+@(studentForm: Form[Student])
+
+
+			<h1> Create a Student</h1>
+		@helper.form(action=routes.Application.post()) {
+				@helper.inputText(studentForm("name"))
+				
+   			 @helper.inputText(studentForm("email"))
+
+   			 @helper.inputPassword(studentForm("password"))
+   			 @helper.inputText(studentForm("age"))
+   			 <input type="submit" name="send" value="Feed"/>	
+   			 }
