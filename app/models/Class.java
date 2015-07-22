@@ -16,7 +16,7 @@ public class Class extends Model{
 	private static int version;
 	private static List<StudentAndCourse> pointer;
 	private static List<Class> archive;
-	
+
 	
 	public Class(String name) {
 		this.name = name;

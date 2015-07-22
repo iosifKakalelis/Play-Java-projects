@@ -15,17 +15,27 @@ public class Student extends Model {
 	@Id
 	@GeneratedValue
 	public Long id;
-	 
+	
 	@Constraints.Required
 	private String name;
 	
 	@Constraints.Required
     protected String email;
     protected String password;
+    public String field;
+    protected String nationality;
+    //protected String something;
+    
+	
 
-	
-	
+    
+
+
 	private String age;
+	
+
+
+
 	//public static Finder<Long,Student> find = new Finder(
 	       // Long.class,Student.class);
 	//@ManyToMany(mappedBy = "students")
@@ -104,14 +114,21 @@ public class Student extends Model {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getNationality() {
+		return nationality;
+	}
 
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
 	
 	
 	public String toString()
 	{
 		 return "Name:  " + this.getName()+ 
 	                "\n Email: " + this.getEmail() +  "\n Age:  "
-	                 + this.getAge()+ "\n \n " ;
+	                 + this.getAge()+ " Nationality: "+this.getNationality() ;
 	}
 	 
 	    }

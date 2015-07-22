@@ -7,26 +7,33 @@ import play.mvc.*;
 import java.util.*;
 import views.html.*;
 import javax.validation.*;
+import java.sql.CallableStatement;
+import static play.data.Form.form;
 import static play.data.validation.Constraints.*;
 import com.avaje.ebean.*;
 import play.data.*;
+
 //import play.data.Form;
 //import views.html.helper.form;
 
-public class Application extends Controller {
+public class Application extends Controller  {
 	private String stud_n;
 	private String class_n;
 	private play.data.Form<Student> studentForm = play.data.Form.form(Student.class);
 	
 	public Result init()
 	{
+		 
+		//Student s1 =  findStudent("Iosif Kakalelis");
+		// this.createAndPopulateStudents("junk", "VARCHAR(255)", "trash");
+		// this.createAndPopulateStudent(s1,"grade", "VARCHAR(255)", "100");
 		 return ok(menu.render());
 
 	}
    
 	public Result index() {
-    	//Form<Student> studentForm = Form.form(Student.class);
-   /* Course c1 = new Course("Maths");	
+    //Form<Student> studentForm = Form.form(Student.class);
+  /* Course c1 = new Course("Maths");	
     Course c2 = new Course("Physics");	
     c1.save();
     c2.save();
@@ -46,12 +53,13 @@ public class Application extends Controller {
     s4.addCourse(c1);
     s1.addCourse(c2);
     s3.addCourse(c2);
+   */
    // List<Student> students =  new ArrayList <Student>() ; 
    //List<StudentAndCourse>  students = StudentAndCourse.find.all();
     	// Student s6=	new Student("dadgdsgsgsgdghddhdhdh",23);	
     	// s6.save();
  //  List<Student> students = Student.find.where()
-*/	      //  .eq("name", "Iosif Kakalelis").findList();
+	      //  .eq("name", "Iosif Kakalelis").findList();
 	//	Course c3 = new Course("Chemistry");
 		//c3.save();
 		//Student s1 =  findStudent("Iosif Kakalelis");	
@@ -69,6 +77,9 @@ public class Application extends Controller {
         return ok(main.render("It works",stud_n,class_n,students,courses));
 
     }
+	
+	
+	
 	public Result results()
 	{
 		List<List<StudentAndCourse>> listOfLists = new ArrayList<List<StudentAndCourse>>();
@@ -84,8 +95,11 @@ public class Application extends Controller {
     	return ok(home.render(studentForm));
      }
     public Result post() {
-
-	    	Student student = studentForm.bindFromRequest().get();
+    	Student student = studentForm.bindFromRequest().get();
+    	 if(studentForm.hasErrors()) {
+             return badRequest(info.render("Error"));
+         }
+	    	
 	    	student.save();
 	    return ok(info.render("Student added.."));
 	}
@@ -125,6 +139,14 @@ public class Application extends Controller {
     	return students;
     }
     
+    public static Result delete(String name) {
+   
+        Student temp = findStudent(name);
+    	temp.delete();
+       return ok(info.render("Student deleted.."));
+    }
+    
+    
     public static  Student findStudent(String name)
     {
     	List<Student> students =   
@@ -133,5 +155,89 @@ public class Application extends Controller {
     		        .findList();  
     	
     	return students.get(0);
+    }
+    
+    public  Result edit(String id) {
+    	Student s = findStudent(id);
+        play.data.Form<Student> studentForm = form(Student.class).fill(s);
+        
+        return ok(
+            editForm.render(id, studentForm)
+        );
+    }
+    
+    public  Result update(String id) {
+        studentForm = form(Student.class).bindFromRequest();
+        if(studentForm.hasErrors()) {
+            return badRequest(info.render("error"));
+        }
+        Student temp =studentForm.get();
+        temp.update(id);
+       
+        return ok(info.render("success"));
+    }
+    
+    public void Test() {
+    	 List<Student> students= this.findAllStudents();
+		 for(Student stud:students)
+		 {
+			String sql = "UPDATE student SET field2='"+stud.getName()+","+stud.getAge()+"' WHERE name='"+stud.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 } 
+		 
+
+			this.addColumn("student","Nationality" , "VARCHAR(255)");
+			Student s1 =  findStudent("Iosif Kakalelis");	
+			this.populateStudent(s1, "Nationality", "Greek");
+    }
+    
+    public void addColumn(String table ,String name, String type) {
+    	String sql = "ALTER TABLE "+table+" ADD COLUMN "+name+ " "+type;
+    	CallableSql cs = Ebean.createCallableSql(sql);
+		Ebean.execute(cs);
+    }
+    
+    public void populateStudents(String field, String something) {
+    	 List<Student> students= this.findAllStudents();
+		 for(Student stud:students)
+		 {
+			String sql = "UPDATE student SET "+field+"='"+something+"' WHERE name='"+stud.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 } 
+    }
+    
+    public void populateStudent(Student stud, String field, String something) {
+   
+			String sql = "UPDATE student SET "+field+"='"+something+"' WHERE name='"+stud.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		  
+   }
+    
+    public void populateCourses(String field, String something) {
+   	 List<Course> courses= this.findAllCourses();
+		 for(Course course:courses)
+		 {
+			String sql = "UPDATE course SET "+field+"='"+something+"' WHERE name='"+course.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 } 
+   }
+    
+    public void createAndPopulateStudents( String name, String type, String something)
+    
+    {
+    	this.addColumn("student",name, type);
+    	this.populateStudents(name, something);
+    	
+    }
+ public void createAndPopulateStudent(Student stud, String name, String type, String something)
+    
+    {
+    	this.addColumn("student",name, type);
+    	this.populateStudent(stud,name, something);
+    	
     }
 }

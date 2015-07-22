@@ -59,6 +59,12 @@ public class Course extends Model{
 		students.add(aStudent);
 	}
 
-
+	public static Map<String,String> options() {
+        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
+        for(Course c: Course.find.orderBy("name").findList()) {
+            options.put(c.id.toString(), c.name);
+        }
+        return options;
+    }
 
 }
