@@ -1,0 +1,50 @@
+@(id: String, studentForm: Form[Student])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+<script type = "text/javascript">
+	function proceed2()
+	{
+		var name = document.forms['assignForm'].courseField.value;
+		 alert("Course assigned");
+		 window.location.href = "/assign/"+name;
+		 return false; 
+		 
+	}
+
+</script>
+    
+    <h1>Edit student</h1>
+    
+    @helper.form(routes.Application.update(id)) {
+        
+        <fieldset>
+        
+            
+			@helper.inputText(studentForm("name"))
+				
+   			 @helper.inputText(studentForm("email"))
+
+   			 @helper.inputPassword(studentForm("password"))
+   			 @helper.inputText(studentForm("age"))
+        
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Update this student" class="btn primary"> or 
+            <a href="@routes.Application.init()" class="btn">Cancel</a> 
+        </div>
+        
+       
+        
+  }  
+   <form id = "assignForm"  name = "assignForm" method="post" action = "@routes.Application.assignCourse()" />
+		<input type = "text" name ="course" size = "30" />
+		<input hidden type = "text" name ="student" value = '@studentForm.get().getName()' />
+		<input type="submit" value="Assign" />   
+		</form>
+    
+     
+
