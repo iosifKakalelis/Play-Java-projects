@@ -16,8 +16,7 @@ public class Course extends Model{
 	@Constraints.Required	
 	private String name;
 
-	@ManyToMany(mappedBy = "courses")
-	private List<Student> students;
+
 	//public List<Student> students = new ArrayList<Student>();
 	public static Finder<Long,Course> find = new Finder(
 			Long.class,Course.class);
@@ -50,14 +49,6 @@ public class Course extends Model{
 	}
 
 
-	public List<Student> getStudents() {
-		return students;
-	}
-
-
-	public void addStudent(Student aStudent) {
-		students.add(aStudent);
-	}
 
 	public static Map<String,String> options() {
         LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();

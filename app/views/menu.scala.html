@@ -18,17 +18,32 @@ nav {
 }
 
 </style>
+<script type = "text/javascript">
+	function proceed()
+	{
+		var name = document.forms['searchForm'].nameField.value;
+		 window.location.href = "/editForm/"+name;
+	}
+	
+
+
+</script>
 <body>
 <nav>
 	<ul>
 		<li><a href="@routes.Application.show()">Create a Student</a></li>
 		<li>
 			<a href="@routes.Application.index()">Demo Mode <span class="caret"></span></a>
-			<
+			
 		</li>
 		<li><a href="@routes.Application.results()">View Students</a></li>
 		<li><a href="">Help</a></li>
 	</ul>
+	<form id = "searchForm"  name = "searchForm" method = "get" action = "" />
+	<input type = "text" name ="nameField" size = "30" />
+	<input type="button" value="Edit" onclick= "proceed();"/>  
+	
+	</form>
 </nav>
 
 </body>

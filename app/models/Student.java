@@ -10,7 +10,7 @@ import play.data.format.*;
 import play.data.validation.*;
 
 @Entity
-public class Student extends Model {
+public class Student extends Model implements Methods{
 	
 	@Id
 	@GeneratedValue
@@ -24,6 +24,9 @@ public class Student extends Model {
     protected String password;
     public String field;
     protected String nationality;
+    public String sex;
+    public String team;
+    
     //protected String something;
     
 	
@@ -40,8 +43,7 @@ public class Student extends Model {
 	       // Long.class,Student.class);
 	//@ManyToMany(mappedBy = "students")
 	//public List<Course> courses = new ArrayList<Course>();
-	@ManyToMany
-	public List<Course> courses;
+
 
 	public static Finder<Long,Student> find = new Finder<Long,Student>(
 		        Long.class, Student.class
@@ -94,10 +96,16 @@ public class Student extends Model {
 		this.age = age;
 	}
 
-
-	private List<Course> getCourses() {
-		return courses;
+  
+	public String getTeam() {
+		return team;
 	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
+	
 
 	public String getEmail() {
 		return email;
@@ -124,12 +132,28 @@ public class Student extends Model {
 	}
 	
 	
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public String toString()
 	{
 		 return "Name:  " + this.getName()+ 
 	                "\n Email: " + this.getEmail() +  "\n Age:  "
 	                 + this.getAge()+ " Nationality: "+this.getNationality() ;
 	}
+
+	@Override
+	public int addAge() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
 	 
 	    }
 

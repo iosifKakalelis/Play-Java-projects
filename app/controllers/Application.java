@@ -5,25 +5,38 @@ import play.*;
 import play.api.data.Form;
 import play.mvc.*;
 import java.util.*;
+import java.util.concurrent.Callable;
+
 import views.html.*;
 import javax.validation.*;
 import java.sql.CallableStatement;
 import static play.data.Form.form;
 import static play.data.validation.Constraints.*;
 import com.avaje.ebean.*;
+import java.lang.reflect.Method;
 import play.data.*;
-
+import veltio.testing.*;
 //import play.data.Form;
 //import views.html.helper.form;
 
-public class Application extends Controller  {
+public class Application extends Controller implements Methods {
 	private String stud_n;
 	private String class_n;
 	private play.data.Form<Student> studentForm = play.data.Form.form(Student.class);
-	
-	public Result init()
+	public static List<Student>  students;
+	public Result init() throws Exception
 	{
-		 
+		/*try{
+			inspectDB.action();	
+		}
+		
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		*/
+		// Method method1 = Application.class.getMethod("addAge", null);   
+		//this.populate("student", "age", this,method1);
 		//Student s1 =  findStudent("Iosif Kakalelis");
 		// this.createAndPopulateStudents("junk", "VARCHAR(255)", "trash");
 		// this.createAndPopulateStudent(s1,"grade", "VARCHAR(255)", "100");
@@ -157,24 +170,67 @@ public class Application extends Controller  {
     	return students.get(0);
     }
     
+    public static  Course findCourse(String name)
+    {
+    	List<Course> courses =   
+    		    Ebean.find(Course.class)  
+    		        .where().ilike("name", name)  
+    		        .findList();  
+    	
+    	return courses.get(0);
+    }
     public  Result edit(String id) {
     	Student s = findStudent(id);
-        play.data.Form<Student> studentForm = form(Student.class).fill(s);
+      //  play.data.Form<Student> 
+    		studentForm = form(Student.class).fill(s);
         
         return ok(
             editForm.render(id, studentForm)
         );
     }
     
+    public void assign(String id, String name) {
+    	 
+    	 Student s = this.findStudent(name);
+    	 Course c =findCourse(id);
+    	 s.addCourse(c);
+    	 
+    }
+   
+    public Result assignCourse()
+    {
+    	play.data.Form<Foo> classForm = play.data.Form.form(Foo.class);
+    	//Map<String, String> toBind = new HashMap<String, String>();
+    	//toBind.put("course", "student");
+    	Foo aClass = classForm.bindFromRequest().get();
+    	String course = aClass.getCourse();
+    	System.out.println(course);
+    	String student= aClass.getStudent();
+    	System.out.println(student);
+    	assign(course,student);
+    	return ok(info.render("Course assigned"));
+    	
+    }
     public  Result update(String id) {
         studentForm = form(Student.class).bindFromRequest();
         if(studentForm.hasErrors()) {
             return badRequest(info.render("error"));
         }
-        Student temp =studentForm.get();
-        temp.update(id);
-       
-        return ok(info.render("success"));
+        else
+        {
+        	  Student s1 =studentForm.bindFromRequest().get();
+        
+        	  Student s2 =  findStudent(s1.getName());
+        	  s2.setName(s1.getName());
+        	  s2.setEmail(s1.getEmail());
+        	  s2.setAge(s1.getAge());
+        	  s2.setPassword(s1.getPassword());
+              s2.update();
+              
+              return ok(info.render("success"));
+        	
+        }
+      
     }
     
     public void Test() {
@@ -192,14 +248,14 @@ public class Application extends Controller  {
 			this.populateStudent(s1, "Nationality", "Greek");
     }
     
-    public void addColumn(String table ,String name, String type) {
+    public static void addColumn(String table ,String name, String type) {
     	String sql = "ALTER TABLE "+table+" ADD COLUMN "+name+ " "+type;
     	CallableSql cs = Ebean.createCallableSql(sql);
 		Ebean.execute(cs);
     }
     
-    public void populateStudents(String field, String something) {
-    	 List<Student> students= this.findAllStudents();
+    public static void populateStudents(String field, String something) {
+    	  students= findAllStudents();
 		 for(Student stud:students)
 		 {
 			String sql = "UPDATE student SET "+field+"='"+something+"' WHERE name='"+stud.getName()+"'";
@@ -208,7 +264,7 @@ public class Application extends Controller  {
 		 } 
     }
     
-    public void populateStudent(Student stud, String field, String something) {
+    public static void populateStudent(Student stud, String field, String something) {
    
 			String sql = "UPDATE student SET "+field+"='"+something+"' WHERE name='"+stud.getName()+"'";
 			 CallableSql cs = Ebean.createCallableSql(sql);
@@ -216,7 +272,7 @@ public class Application extends Controller  {
 		  
    }
     
-    public void populateCourses(String field, String something) {
+    public  void populateCourses(String field, String something) {
    	 List<Course> courses= this.findAllCourses();
 		 for(Course course:courses)
 		 {
@@ -226,18 +282,75 @@ public class Application extends Controller  {
 		 } 
    }
     
-    public void createAndPopulateStudents( String name, String type, String something)
+    public static void createAndPopulateStudents( String name, String type, String something)
     
     {
-    	this.addColumn("student",name, type);
-    	this.populateStudents(name, something);
+    	addColumn("student",name, type);
+    	populateStudents(name, something);
     	
     }
- public void createAndPopulateStudent(Student stud, String name, String type, String something)
+ public static void createAndPopulateStudent(Student stud, String name, String type, String something)
     
     {
-    	this.addColumn("student",name, type);
-    	this.populateStudent(stud,name, something);
+    	addColumn("student",name, type);
+    	populateStudent(stud,name, something);
     	
     }
+ public void  populate(String table , String field, Methods x, Method y) throws Exception{
+	 
+	Object var = y.invoke(x);
+	 
+	 if(table=="student"){
+		 students= findAllStudents();
+		 for(Student stud:students)
+		 {
+			String sql = "UPDATE student SET "+field+"='"+var+"' WHERE name='"+stud.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 } 	 
+	 }
+	 else if(table=="course") {
+		List<Course> courses =  Course.find.all();
+		 for(Course course:courses)
+		 {
+			 String sql = "UPDATE course SET "+field+"='"+var+"' WHERE name='"+course.getName()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 } 	 
+	 }
+	 else if(table=="student_and_course")
+	 {
+		 List<StudentAndCourse> alist = StudentAndCourse.find.all();
+		 for(StudentAndCourse list:alist){
+			 String sql = "UPDATE student_and_course SET "+field+"='"+var+"' WHERE student_id='"+list.getStudent().getId()+"' AND course_id = '"+list.getCourse().getId()+"'";
+			 CallableSql cs = Ebean.createCallableSql(sql);
+			 Ebean.execute(cs);
+		 }
+		 
+	 }
+	 
+	 else
+	 {
+		 System.out.println("Table doesn't exist");
+	 }
+	 
+	 }
+
+	@Override
+	public int addAge() {
+		 students= findAllStudents();
+		 int sum=0;
+		 for(Student stud:students)
+		 {
+			 sum+=Integer.parseInt(stud.getAge());
+		 } 
+		 return sum;
+	}
+	 
+	 
+	 
+ 
+ 
 }
+ 
+
