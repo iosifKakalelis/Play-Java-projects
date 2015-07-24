@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>It rocks!!!</title>
 </head>
 <style>
 nav {
@@ -25,6 +25,11 @@ nav {
 		 window.location.href = "/editForm/"+name;
 	}
 	
+	function proceed3()
+	{
+		var name = document.forms['deleteForm'].deleteField.value;
+		 window.location.href = "/delete/"+name;
+	}
 
 
 </script>
@@ -42,6 +47,12 @@ nav {
 	<form id = "searchForm"  name = "searchForm" method = "get" action = "" />
 	<input type = "text" name ="nameField" size = "30" />
 	<input type="button" value="Edit" onclick= "proceed();"/>  
+	
+	</form>
+	
+	<form id = "searchForm"  name = "deleteForm" method = "get" action = "" />
+	<input type = "text" name ="deleteField" size = "30" />
+	<input type="button" value="Delete Student" onclick= "proceed3();"/>  
 	
 	</form>
 </nav>

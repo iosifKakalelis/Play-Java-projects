@@ -128,6 +128,8 @@ public class Application extends Controller implements Methods {
     	return courses;
     }
     
+    
+    
     public static  List<StudentAndCourse> findModules(String name)
     {
     	List<StudentAndCourse> students =   
@@ -152,10 +154,18 @@ public class Application extends Controller implements Methods {
     	return students;
     }
     
-    public static Result delete(String name) {
+    public  Result delete(String name) {
    
         Student temp = findStudent(name);
+    	List <StudentAndCourse> junk = this.findModules(temp.getName());
+    	for(StudentAndCourse a:junk)
+    	{
+    		a.delete();
+    	}
+    	
     	temp.delete();
+    	
+    	
        return ok(info.render("Student deleted.."));
     }
     
@@ -348,8 +358,33 @@ public class Application extends Controller implements Methods {
 	}
 	 
 	 
+	public  Result login() {
+	    return ok(
+	    	 login.render(play.data.Form.form(Login.class))
+	    );
+	}
+	
+	public  Result authenticate() {
+		play.data.Form<Login> loginForm = play.data.Form.form(Login.class).bindFromRequest();
+	    if (loginForm.hasErrors()) {
+	        return badRequest(login.render(loginForm));
+	    } else {
+	        //session().clear();
+	       // session("email", loginForm.get().email);
+	        return redirect(
+	            routes.Application.init()
+	        );
+	    }
+	}
+	
+	
 	 
- 
+	public static class Login {
+
+	    public String email;
+	    public String password;
+
+	}
  
 }
  

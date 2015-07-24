@@ -31,8 +31,7 @@ public class Student extends Model implements Methods{
     
 	
 
-    
-
+ 
 
 	private String age;
 	
