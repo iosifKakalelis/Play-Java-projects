@@ -4,6 +4,8 @@ import models.*;
 import play.*;
 import play.api.data.Form;
 import play.mvc.*;
+import testing.*;
+
 import java.util.*;
 import java.util.concurrent.Callable;
 
@@ -15,9 +17,6 @@ import static play.data.validation.Constraints.*;
 import com.avaje.ebean.*;
 import java.lang.reflect.Method;
 import play.data.*;
-import veltio.testing.*;
-//import play.data.Form;
-//import views.html.helper.form;
 
 public class Application extends Controller implements Methods {
 	private String stud_n;
@@ -26,15 +25,15 @@ public class Application extends Controller implements Methods {
 	public static List<Student>  students;
 	public Result init() throws Exception
 	{
-		/*try{
-			inspectDB.action();	
+		try{
+			InspectDB.action();	
 		}
 		
 		catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-		*/
+		}  
+		
 		// Method method1 = Application.class.getMethod("addAge", null);   
 		//this.populate("student", "age", this,method1);
 		//Student s1 =  findStudent("Iosif Kakalelis");
@@ -365,7 +364,7 @@ public class Application extends Controller implements Methods {
 	}
 	
 	public  Result authenticate() {
-		play.data.Form<Login> loginForm = play.data.Form.form(Login.class).bindFromRequest();
+		 play.data.Form<Login> loginForm = play.data.Form.form(Login.class).bindFromRequest();
 	    if (loginForm.hasErrors()) {
 	        return badRequest(login.render(loginForm));
 	    } else {
@@ -385,6 +384,8 @@ public class Application extends Controller implements Methods {
 	    public String password;
 
 	}
+	
+	
  
 }
  

@@ -1,4 +1,4 @@
-package veltio.testing;
+package testing;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;

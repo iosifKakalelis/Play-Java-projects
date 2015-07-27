@@ -1,4 +1,4 @@
-package veltio.testing;
+package testing;
 
 public class Report {
 	/* code = 0 means everything is ok, code = 1 means a column must be added 

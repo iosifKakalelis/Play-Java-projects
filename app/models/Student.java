@@ -26,6 +26,8 @@ public class Student extends Model implements Methods{
     protected String nationality;
     public String sex;
     public String team;
+    public String team2;
+    private String field3;
     
     //protected String something;
     
@@ -138,10 +140,19 @@ public class Student extends Model implements Methods{
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+	
+	
+	public String getTeam2() {
+		return team2;
+	}
+
+	public void setTeam2(String team2) {
+		this.team2 = team2;
+	}
 
 	public String toString()
 	{
-		 return "Name:  " + this.getName()+ 
+		 return "Name:  " + this.getField3()+ 
 	                "\n Email: " + this.getEmail() +  "\n Age:  "
 	                 + this.getAge()+ " Nationality: "+this.getNationality() ;
 	}
@@ -151,6 +162,16 @@ public class Student extends Model implements Methods{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+public String getField3()
+{
+	 return field3;
+}
+
+public void setField3(String field3)
+{
+	 this.field3 = field3;
+}
 	
 	
 	 

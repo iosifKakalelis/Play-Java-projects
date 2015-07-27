@@ -1,4 +1,4 @@
-package veltio.testing;
+package testing;
 
 
 import java.lang.reflect.Field;
@@ -7,20 +7,24 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 import controllers.*;
+import models.Student;
 
 
-public class inspectDB {
+public class InspectDB implements Populator
+{
 
 	private static Connection connection;
 	
-	public inspectDB()
+	public InspectDB()
 	{
 		
 	}
 
-	public static void action() throws Exception {
+	public static void action() throws Exception 
+	{
 		
 		/* Establish connection to the database */
 
@@ -68,8 +72,28 @@ public class inspectDB {
 	    }
 	    else if(report.getCode() == 1) {
 	    	System.out.println("Adding the new field to the database");
-	    	;
-	    	menu(report);
+	    	PopulatorA a = new PopulatorA();
+	    	// Updating schema and populating concurently
+	    	UpdateSchema.addColumn(connection, "student", report.getColumnType(),report.columnName, a);
+        	
+	    	/*Populator populator = new Populator() {
+			
+			@Override
+			public void populate() {
+				List<Student>  students = Application.findAllStudents();
+				
+				 for(Student stud:students)
+				 {
+					stud.setTeam2("Aris"); 
+					stud.update();
+				 } 	 
+				
+			}
+		};
+		/*
+		 
+		 */
+	   
 	    }
 	    else if(report.getCode() == 2) {
 	    	System.out.println("Dropping the extra column from the database");
@@ -80,8 +104,8 @@ public class inspectDB {
 	  
 	}
 	
-	  public static void menu(Report report) throws SQLException
-	    {
+	  public static void menu(Report report) throws SQLException 
+	  {
 	    	int choiceentry;
 	    	Scanner in = new Scanner (System.in);
 	    	
@@ -97,13 +121,13 @@ public class inspectDB {
 	    	    switch (choiceentry)
 	    	    {
 	    	        case 1:
-	    	        	UpdateSchema.addColumn(connection, "student", report.getColumnType(),report.columnName);
+	    	        	
 	    	            break;
 	    	        case 2: 
 	    	        	String choice;
 	    	        	System.out.println("Insert Value: ");
 	    	        	choice = in.next();
-	    	        	UpdateSchema.addColumn(connection, "student", report.getColumnType(),report.columnName);
+	    	        	//UpdateSchema.addColumn(connection, "student", report.getColumnType(),report.columnName);
 	    	        	controllers.Application.populateStudents(report.columnName, choice);
 	    	        case 3: 
 	    	            // .. exit program
@@ -113,6 +137,26 @@ public class inspectDB {
 	    	    }   
 	    	} while (choiceentry != 3);
 	    }
+	  
+	  
+	  
+
+	@Override
+	public void populate() {
+		
+		List<Student>  students = Application.findAllStudents();
+		
+		 for(Student stud:students)
+		 {
+			stud.setAge("30"); 
+			stud.update();
+		 } 	 
+		
+		
+		
+	}
+	  
+	  
 	
 }
 
